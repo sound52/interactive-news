@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="충청투데이형 인터랙티브 뉴스 템플릿" />
+  <title>인터랙티브 뉴스 템플릿</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="처음으로">충청투데이 · 인터랙티브</a>
+    <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="nav">메뉴</button>
+    <nav id="nav" class="nav" aria-label="기사 목차"></nav>
+  </header>
+
+  <main id="top">
+    <section class="hero" id="hero">
+      <div class="hero-media" aria-hidden="true"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content reveal">
+        <p class="eyebrow" id="heroEyebrow"></p>
+        <h1 id="heroTitle"></h1>
+        <p class="hero-deck" id="heroDeck"></p>
+        <p class="hero-meta" id="heroMeta"></p>
+      </div>
+      <div class="scroll-cue">SCROLL <span></span></div>
+    </section>
+
+    <section class="metrics-wrap" aria-label="핵심 수치">
+      <div class="metrics" id="metrics"></div>
+    </section>
+
+    <div id="story"></div>
+
+    <section class="closing" id="closing">
+      <div class="closing-inner reveal">
+        <p class="eyebrow" id="closingEyebrow"></p>
+        <h2 id="closingTitle"></h2>
+        <p id="closingText"></p>
+        <div class="closing-links" id="closingLinks"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p id="footerText"></p>
+  </footer>
+
+  <script src="content.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
