@@ -1,113 +1,133 @@
 /*
-  이 파일만 수정하면 기사 내용이 바뀝니다.
-  숫자는 임의 예시입니다. 실제 보도 시 확인된 자료로 교체하세요.
+  기사별로 주로 수정하는 파일입니다.
+  예시 문구와 수치는 구조 확인용입니다. 실제 기사 데이터로 반드시 교체하십시오.
 */
-window.STORY_DATA = {
-  theme: {
-    accent: "#d93b2b",
-    background: "#f5f3ee"
+window.STORY = {
+  meta: {
+    title: "도시의 여름, 축제로 물들다",
+    description: "사진과 데이터로 살펴본 지역축제의 변화",
+    image: "assets/hero.svg",
+    brand: "CHUNGCHEONG INTERACTIVE"
   },
   hero: {
-    eyebrow: "충청투데이 심층기획 · 2026",
-    title: "도시의 변화를\n데이터로 읽다",
-    deck: "기사와 사진, 수치만 교체해 사용하는\n반응형 인터랙티브 뉴스 템플릿",
-    meta: "취재·글 홍길동 기자 · 사진 충청투데이",
+    kicker: "INTERACTIVE REPORT",
+    title: "도시의 여름, 축제로 물들다",
+    deck: "거리와 광장, 골목을 채운 사람들. 지역축제가 도시의 표정을 어떻게 바꾸는지 현장과 데이터로 살펴봤다.",
+    byline: "취재·제작 홍길동 기자 | 2026. 7. 23.",
     image: "assets/hero.svg"
   },
-  metrics: [
-    { value: 149, suffix: "명", label: "설문 응답자" },
-    { value: 61.7, suffix: "%", label: "참여 경험 비율", decimals: 1 },
-    { value: 34.9, suffix: "%", label: "대표 항목 1위", decimals: 1 },
-    { value: 38.9, suffix: "%", label: "최우선 개선 요구", decimals: 1 }
+  intro: {
+    lead: "축제는 단순한 행사가 아니다. 도시의 공간과 사람, 상권과 기억이 한꺼번에 움직이는 짧고 밀도 높은 시간이다.",
+    body: [
+      "낮에는 가족 단위 방문객이 거리를 채우고, 해가 지면 공연과 조명이 도시의 분위기를 바꾼다. 축제장 주변 상인은 평소와 다른 유동 인구를 체감하고, 방문객은 익숙한 도심을 새로운 장소처럼 경험한다.",
+      "이번 인터랙티브 기사는 현장 사진과 조사 수치, 관계자 목소리를 통해 축제가 남긴 변화와 향후 과제를 차례로 보여준다."
+    ]
+  },
+  stats: [
+    { value: 120, suffix: "만명", label: "누적 방문객", note: "공식 집계 기준" },
+    { value: 7, suffix: "일", label: "축제 운영 기간", note: "도심 주요 구간" },
+    { value: 38, suffix: "%", label: "외지 방문 비율", note: "설문 응답 기준" },
+    { value: 4.6, suffix: "점", label: "평균 만족도", note: "5점 만점" }
   ],
   sections: [
     {
-      id: "profile",
-      nav: "응답자",
-      number: "01",
-      title: "첫 번째 핵심 질문을\n독자에게 제시한다",
-      lead: "섹션 도입부에는 조사 개요와 핵심 맥락을 3~5문장으로 배치한다. 길게 설명하기보다 뒤에 나올 시각자료를 이해하는 데 필요한 내용만 남긴다.",
-      type: "bars",
-      body: [
-        "이 템플릿은 기사 본문, 막대그래프, 순위, 카드, 대형 사진 구간을 조합할 수 있도록 만들었다.",
-        "content.js의 문구와 수치만 교체하면 HTML 구조를 직접 건드리지 않고도 다른 기획 기사에 재사용할 수 있다."
-      ],
-      chartTitle: "연령 분포 예시",
-      chart: [
-        { label: "20대", value: 22.8 },
-        { label: "30대", value: 20.8 },
-        { label: "50대", value: 19.5 },
-        { label: "40대", value: 16.8 },
-        { label: "60대 이상", value: 14.1 }
-      ],
-      note: "※ 예시 수치. 실제 기사에서는 출처와 조사 기준을 명시해야 한다."
-    },
-    {
-      id: "ranking",
-      nav: "순위",
-      number: "02",
-      title: "가장 주목받은 항목은\n무엇이었나",
-      lead: "복수 응답이나 순위형 데이터를 보여주는 구간이다. 순위와 수치를 동시에 제시하고, 본문에서는 1위와 2위의 격차나 의미를 해설한다.",
-      type: "ranking",
-      body: [
-        "순위는 자동으로 번호가 붙는다. percentage에는 화면에 표시할 문자열을 그대로 입력하면 된다.",
-        "보도자료 수치를 옮길 때는 모집단, 응답자 수, 복수 응답 여부를 반드시 함께 표기한다."
-      ],
-      ranking: [
-        { label: "첫 번째 항목", percentage: "77.2%", detail: "71명" },
-        { label: "두 번째 항목", percentage: "50.0%", detail: "46명" },
-        { label: "세 번째 항목", percentage: "38.0%", detail: "35명" },
-        { label: "네 번째 항목", percentage: "34.8%", detail: "32명" }
-      ],
-      quote: {
-        text: "숫자는 결론이 아니라 취재를 시작하게 하는 단서다.",
-        source: "전문가 또는 취재원 인용"
-      }
-    },
-    {
-      id: "photo",
+      id: "scene",
       nav: "현장",
-      type: "photo",
-      image: "assets/scene.svg",
-      title: "현장의 규모와 분위기를\n대형 사진으로 전환",
-      text: "사진 설명이나 핵심 취재 내용을 짧게 배치한다. 모바일에서는 배경 고정 효과를 해제해 성능 저하를 줄인다."
+      type: "scrolly",
+      label: "01 · THE SCENE",
+      title: "한 걸음마다 달라지는 축제의 표정",
+      description: "스크롤을 내리며 시간대별 현장 변화를 확인한다.",
+      steps: [
+        { title: "낮, 가족이 모이다", text: "오후 시간대에는 체험 프로그램과 먹거리 공간을 중심으로 가족 단위 방문객이 몰렸다.", image: "assets/scene-day.svg" },
+        { title: "해질녘, 거리가 무대가 되다", text: "주요 공연이 시작되면서 유동 인구가 광장과 메인 무대로 빠르게 이동했다.", image: "assets/scene-evening.svg" },
+        { title: "밤, 도시의 분위기가 바뀌다", text: "조명과 음악이 도심 경관을 바꾸며 축제의 체류 시간이 길어졌다.", image: "assets/scene-night.svg" }
+      ]
     },
     {
-      id: "issues",
-      nav: "쟁점",
-      number: "03",
-      title: "쟁점은 세 갈래로\n구조화한다",
-      lead: "복잡한 내용을 카드형으로 정리하는 구간이다. 각 카드에는 하나의 주장 또는 과제만 담는 편이 읽기 쉽다.",
+      id: "meaning",
+      nav: "의미",
+      type: "split",
+      label: "02 · WHY IT MATTERS",
+      title: "행사를 넘어 도시 경험으로",
+      body: [
+        "지역축제의 성패는 방문객 숫자만으로 설명하기 어렵다. 시민이 일상적으로 이용하던 거리를 새로운 방식으로 경험하고, 지역 상권과 문화예술인이 함께 참여하는 구조를 만드는 일이 중요하다.",
+        "현장의 체류 시간, 재방문 의향, 주변 상권 파급효과 등을 함께 살펴야 축제가 실제로 도시의 자산이 됐는지 판단할 수 있다."
+      ],
+      image: "assets/split.svg"
+    },
+    {
+      id: "data",
+      nav: "데이터",
+      type: "bars",
+      label: "03 · DATA",
+      title: "방문객이 꼽은 축제의 강점",
+      description: "예시 수치다. 취재 자료의 실제 값으로 교체한다.",
+      unit: "%",
+      max: 100,
+      items: [
+        { label: "공연·볼거리", value: 78 },
+        { label: "접근성", value: 64 },
+        { label: "먹거리", value: 57 },
+        { label: "체험 프로그램", value: 46 },
+        { label: "안내·편의시설", value: 39 }
+      ]
+    },
+    {
+      id: "voices",
+      nav: "목소리",
       type: "cards",
-      cards: [
-        { tag: "쟁점 1", title: "지역 정체성", text: "도시에서만 가능한 고유한 콘텐츠가 무엇인지 설명한다." },
-        { tag: "쟁점 2", title: "차별화", text: "다른 지역 사업과 구별되는 지점과 한계를 함께 제시한다." },
-        { tag: "쟁점 3", title: "지속 가능성", text: "정책과 예산, 운영 주체가 바뀌어도 이어질 수 있는지 짚는다." }
+      label: "04 · VOICES",
+      title: "현장에서 나온 세 가지 목소리",
+      description: "방문객, 상인, 기획자의 시선을 한 화면에 배치한다.",
+      items: [
+        { icon: "●", title: "방문객", text: "도심 한가운데서 여러 프로그램을 한 번에 즐길 수 있다는 점이 가장 편했다." },
+        { icon: "▲", title: "상인", text: "유동 인구는 늘었지만 매출 효과가 업종과 위치에 따라 다르게 나타났다." },
+        { icon: "■", title: "기획자", text: "단기 흥행뿐 아니라 시민 참여와 지역 콘텐츠 축적이 다음 과제다." }
       ]
     },
     {
-      id: "solutions",
-      nav: "제언",
-      number: "04",
-      title: "마지막에는 해법과\n향후 과제를 제시한다",
-      lead: "기사 결론을 반복하기보다 취재 결과를 토대로 가능한 선택지와 남은 과제를 정리한다.",
-      type: "ranking",
-      ranking: [
-        { label: "고유 자산을 콘텐츠 핵심으로 설정", percentage: "01", detail: "정체성" },
-        { label: "시민·전문가 참여 구조 구축", percentage: "02", detail: "거버넌스" },
-        { label: "사업별 역할과 브랜드 체계화", percentage: "03", detail: "전략" },
-        { label: "교통·편의·안전 인프라 개선", percentage: "04", detail: "기반" }
+      id: "timeline",
+      nav: "흐름",
+      type: "timeline",
+      label: "05 · TIMELINE",
+      title: "축제가 만들어지는 과정",
+      description: "기획부터 사후 평가까지 주요 흐름을 정리한다.",
+      items: [
+        { date: "D-180", title: "기본계획 수립", text: "축제 주제와 공간, 예산, 운영 방향을 확정한다." },
+        { date: "D-90", title: "프로그램·참여자 구성", text: "공연과 체험 프로그램, 지역 상권 연계를 구체화한다." },
+        { date: "D-DAY", title: "현장 운영", text: "안전·교통·관람객 동선을 실시간으로 조정한다." },
+        { date: "D+30", title: "성과 분석", text: "방문객 만족도와 상권 효과, 민원 등을 종합 평가한다." }
       ]
+    },
+    {
+      id: "quote",
+      nav: "장면",
+      type: "fullbleed",
+      image: "assets/fullbleed.svg",
+      quote: "좋은 축제는 도시를 잠시 꾸미는 데 그치지 않고, 시민이 도시를 다시 보게 만든다.",
+      cite: "현장 기획자 인터뷰 중"
+    },
+    {
+      id: "gallery",
+      nav: "사진",
+      type: "gallery",
+      label: "06 · PHOTO ESSAY",
+      title: "축제가 지나간 자리",
+      description: "현장 사진을 넣으면 자동으로 가로 흐름형 갤러리가 만들어진다.",
+      images: ["assets/scene-day.svg", "assets/scene-evening.svg", "assets/scene-night.svg", "assets/split.svg"]
     }
   ],
-  closing: {
-    eyebrow: "INTERACTIVE NEWS",
-    title: "데이터와 현장을\n하나의 이야기로",
-    text: "기사 원문 링크, 관련 기사, 취재 후기 등을 배치할 수 있다.",
+  outro: {
+    label: "WHAT'S NEXT",
+    title: "관객 수 이후를 묻다",
+    body: [
+      "지역축제는 짧게 열리지만 준비와 영향은 훨씬 길다. 다음 단계는 방문객 규모를 넘어 도시 브랜드, 시민 참여, 상권 파급효과를 어떻게 축적할지에 달려 있다.",
+      "인터랙티브 기사의 문장과 수치, 사진은 모두 content.js에서 교체할 수 있다."
+    ],
     links: [
-      { label: "기사 원문 보기", url: "#" },
-      { label: "충청투데이 홈페이지", url: "https://www.cctoday.co.kr" }
+      { label: "관련 기사 보기", url: "#" },
+      { label: "자료 원문", url: "#" }
     ]
   },
-  footer: "충청투데이 인터랙티브 뉴스 템플릿 · 수치와 문구는 예시"
+  footer: "© 2026 충청투데이. 무단 전재 및 재배포 금지."
 };

@@ -1,173 +1,116 @@
 (() => {
-  const data = window.STORY_DATA;
-  if (!data) throw new Error("STORY_DATA가 없습니다.");
+  const data = window.STORY;
+  if (!data) return;
+  const $ = (s, root = document) => root.querySelector(s);
+  const $$ = (s, root = document) => [...root.querySelectorAll(s)];
+  const esc = (v = "") => String(v).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
 
-  const $ = (s, p = document) => p.querySelector(s);
-  const el = (tag, cls, html = "") => {
-    const node = document.createElement(tag);
-    if (cls) node.className = cls;
-    node.innerHTML = html;
-    return node;
-  };
+  document.title = data.meta.title;
+  $('meta[name="description"]').setAttribute('content', data.meta.description);
+  $('meta[property="og:title"]').setAttribute('content', data.meta.title);
+  $('meta[property="og:description"]').setAttribute('content', data.meta.description);
+  $('meta[property="og:image"]').setAttribute('content', data.meta.image);
+  $('#brandText').textContent = data.meta.brand;
 
-  document.documentElement.style.setProperty("--accent", data.theme?.accent || "#d93b2b");
-  document.documentElement.style.setProperty("--bg", data.theme?.background || "#f5f3ee");
+  $('#heroKicker').textContent = data.hero.kicker;
+  $('#heroTitle').textContent = data.hero.title;
+  $('#heroDeck').textContent = data.hero.deck;
+  $('#heroByline').textContent = data.hero.byline;
+  $('#heroMedia').style.backgroundImage = `url("${data.hero.image}")`;
+  $('#introLead').textContent = data.intro.lead;
+  $('#introBody').innerHTML = data.intro.body.map(p => `<p>${esc(p)}</p>`).join('');
 
-  $("#heroEyebrow").textContent = data.hero.eyebrow;
-  $("#heroTitle").textContent = data.hero.title;
-  $("#heroDeck").textContent = data.hero.deck;
-  $("#heroMeta").textContent = data.hero.meta;
-  $(".hero-media").style.setProperty("--hero-image", `url('${data.hero.image}')`);
+  $('#statGrid').innerHTML = data.stats.map((s, i) => `
+    <div class="stat-card reveal">
+      <div class="stat-value"><span class="counter" data-value="${Number(s.value)}">0</span><span>${esc(s.suffix)}</span></div>
+      <div class="stat-label">${esc(s.label)}</div>
+      <div class="stat-note">${esc(s.note || '')}</div>
+    </div>`).join('');
 
-  const metrics = $("#metrics");
-  data.metrics.forEach((m) => {
-    const item = el("div", "metric reveal");
-    item.innerHTML = `<strong data-count="${m.value}" data-decimals="${m.decimals || 0}" data-suffix="${m.suffix || ""}">0${m.suffix || ""}</strong><span>${m.label}</span>`;
-    metrics.appendChild(item);
-  });
+  const navItems = [{ id: 'intro', nav: '기사' }, ...data.sections.map(s => ({ id: s.id, nav: s.nav })), { id:'outro', nav:'결론' }];
+  $('#storyNav').innerHTML = navItems.map(n => `<a href="#${esc(n.id)}">${esc(n.nav)}</a>`).join('');
 
-  const nav = $("#nav");
-  const story = $("#story");
-
-  data.sections.forEach((s) => {
-    const a = el("a", "", s.nav || s.title || s.id);
-    a.href = `#${s.id}`;
-    nav.appendChild(a);
-
-    if (s.type === "photo") {
-      const section = el("section", "photo-break");
-      section.id = s.id;
-      section.style.backgroundImage = `url('${s.image}')`;
-      section.innerHTML = `<div class="photo-caption reveal"><h3>${s.title}</h3><p>${s.text || ""}</p></div>`;
-      story.appendChild(section);
-      return;
+  const heading = s => `<div class="section-heading reveal"><p class="section-label">${esc(s.label || '')}</p><h2>${esc(s.title || '')}</h2>${s.description ? `<p>${esc(s.description)}</p>` : ''}</div>`;
+  const sections = data.sections.map(s => {
+    if (s.type === 'scrolly') {
+      const imgs = s.steps.map((x,i)=>`<img src="${esc(x.image)}" alt="${esc(x.title)}" class="${i===0?'active':''}" data-scene="${i}">`).join('');
+      const steps = s.steps.map((x,i)=>`<div class="scrolly-step" data-step="${i}"><div class="step-card"><span class="step-no">0${i+1}</span><h3>${esc(x.title)}</h3><p>${esc(x.text)}</p></div></div>`).join('');
+      return `<section class="story-section scrolly" id="${esc(s.id)}"><div class="scrolly-visual">${imgs}</div><div class="scrolly-steps">${heading(s)}${steps}</div></section>`;
     }
-
-    const section = el("section", "story-section");
-    section.id = s.id;
-    const inner = el("div", "section-inner");
-    inner.innerHTML = `
-      <div class="section-head reveal">
-        <div class="section-no">${s.number || ""}</div>
-        <div><h2>${s.title}</h2><p class="section-lead">${s.lead || ""}</p></div>
-      </div>`;
-
-    if (s.type === "bars") inner.appendChild(renderBars(s));
-    if (s.type === "ranking") inner.appendChild(renderRanking(s));
-    if (s.type === "cards") inner.appendChild(renderCards(s));
-
-    section.appendChild(inner);
-    story.appendChild(section);
-  });
-
-  function renderBody(body = []) {
-    const wrap = el("div", "body-copy");
-    body.forEach((p) => wrap.appendChild(el("p", "", p)));
-    return wrap;
-  }
-
-  function renderBars(s) {
-    const grid = el("div", "text-grid reveal");
-    grid.appendChild(renderBody(s.body));
-    const card = el("div", "chart-card");
-    card.innerHTML = `<h3 class="chart-title">${s.chartTitle || ""}</h3>`;
-    s.chart.forEach((d) => {
-      const row = el("div", "bar-row");
-      row.innerHTML = `<div class="bar-label"><span>${d.label}</span><strong>${d.value}%</strong></div><div class="bar-track"><div class="bar-fill" data-width="${d.value}%"></div></div>`;
-      card.appendChild(row);
-    });
-    if (s.note) card.appendChild(el("p", "", s.note));
-    grid.appendChild(card);
-    return grid;
-  }
-
-  function renderRanking(s) {
-    const grid = el("div", "text-grid reveal");
-    if (s.body?.length) {
-      const left = renderBody(s.body);
-      if (s.quote) left.appendChild(el("blockquote", "quote", `${s.quote.text}<cite>${s.quote.source}</cite>`));
-      grid.appendChild(left);
+    if (s.type === 'split') {
+      return `<section class="story-section split-section" id="${esc(s.id)}"><div class="split-copy"><div class="split-copy-inner reveal"><p class="section-label">${esc(s.label)}</p><h2>${esc(s.title)}</h2>${s.body.map(p=>`<p>${esc(p)}</p>`).join('')}</div></div><div class="split-media" style="background-image:url('${esc(s.image)}')"></div></section>`;
     }
-    const card = el("div", "list-card rank-list");
-    s.ranking.forEach((d, i) => {
-      card.appendChild(el("div", "rank-item", `<div class="rank-no">${String(i + 1).padStart(2, "0")}</div><div><strong>${d.label}</strong><div>${d.detail || ""}</div></div><div class="rank-value">${d.percentage || ""}</div>`));
+    if (s.type === 'bars') {
+      return `<section class="story-section standard-section" id="${esc(s.id)}">${heading(s)}<div class="bar-chart">${s.items.map(x=>`<div class="bar-item reveal"><div class="bar-label">${esc(x.label)}</div><div class="bar-track"><div class="bar-fill" data-width="${Math.min(100, Number(x.value)/Number(s.max)*100)}"></div></div><div class="bar-value">${esc(x.value)}${esc(s.unit)}</div></div>`).join('')}</div></section>`;
+    }
+    if (s.type === 'cards') {
+      return `<section class="story-section standard-section" id="${esc(s.id)}">${heading(s)}<div class="card-grid">${s.items.map(x=>`<article class="story-card reveal"><div class="icon">${esc(x.icon)}</div><h3>${esc(x.title)}</h3><p>${esc(x.text)}</p></article>`).join('')}</div></section>`;
+    }
+    if (s.type === 'timeline') {
+      return `<section class="story-section standard-section" id="${esc(s.id)}">${heading(s)}<div class="timeline">${s.items.map(x=>`<div class="timeline-item reveal"><div class="timeline-date">${esc(x.date)}</div><h3>${esc(x.title)}</h3><p>${esc(x.text)}</p></div>`).join('')}</div></section>`;
+    }
+    if (s.type === 'fullbleed') {
+      return `<section class="story-section fullbleed" id="${esc(s.id)}" style="background-image:url('${esc(s.image)}')"><div class="fullbleed-copy reveal"><blockquote>${esc(s.quote)}</blockquote><cite>${esc(s.cite)}</cite></div></section>`;
+    }
+    if (s.type === 'gallery') {
+      const imgs = [...s.images, ...s.images].map((src,i)=>`<img src="${esc(src)}" alt="현장 사진 ${i%s.images.length+1}">`).join('');
+      return `<section class="story-section standard-section" id="${esc(s.id)}">${heading(s)}<div class="gallery-strip"><div class="gallery-track">${imgs}</div></div></section>`;
+    }
+    return '';
+  }).join('');
+  $('#storySections').innerHTML = sections;
+
+  $('#outroLabel').textContent = data.outro.label;
+  $('#outroTitle').textContent = data.outro.title;
+  $('#outroBody').innerHTML = data.outro.body.map(p=>`<p>${esc(p)}</p>`).join('');
+  $('#relatedLinks').innerHTML = data.outro.links.map(l=>`<a href="${esc(l.url)}">${esc(l.label)}</a>`).join('');
+  $('#footerText').textContent = data.footer;
+
+  const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('visible');
+      e.target.querySelectorAll?.('.bar-fill').forEach(b => b.style.width = `${b.dataset.width}%`);
+      if (e.target.classList.contains('bar-item')) $('.bar-fill', e.target).style.width = `${$('.bar-fill', e.target).dataset.width}%`;
+      revealObserver.unobserve(e.target);
     });
-    grid.appendChild(card);
-    return grid;
-  }
+  }, { threshold: .16 });
+  $$('.reveal, .bar-item').forEach(el => revealObserver.observe(el));
 
-  function renderCards(s) {
-    const grid = el("div", "card-grid reveal");
-    s.cards.forEach((d) => grid.appendChild(el("article", "info-card", `<span class="tag">${d.tag || ""}</span><h3>${d.title}</h3><p>${d.text}</p>`)));
-    return grid;
-  }
+  const counterObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target, target = Number(el.dataset.value), start = performance.now(), duration = 1100;
+      const tick = now => { const p = Math.min(1,(now-start)/duration); el.textContent = (target*p).toFixed(Number.isInteger(target)?0:1); if(p<1) requestAnimationFrame(tick); };
+      requestAnimationFrame(tick); counterObserver.unobserve(el);
+    });
+  }, { threshold: .6 });
+  $$('.counter').forEach(el => counterObserver.observe(el));
 
-  $("#closingEyebrow").textContent = data.closing.eyebrow;
-  $("#closingTitle").textContent = data.closing.title;
-  $("#closingText").textContent = data.closing.text;
-  data.closing.links.forEach((link) => {
-    const a = el("a", "", link.label);
-    a.href = link.url;
-    if (/^https?:/.test(link.url)) { a.target = "_blank"; a.rel = "noopener"; }
-    $("#closingLinks").appendChild(a);
+  $$('.scrolly').forEach(scrolly => {
+    const images = $$('[data-scene]', scrolly);
+    const steps = $$('[data-step]', scrolly);
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if(!e.isIntersecting) return; const i = Number(e.target.dataset.step); images.forEach((im,j)=>im.classList.toggle('active', i===j)); });
+    }, { rootMargin:'-35% 0px -45% 0px', threshold:0 });
+    steps.forEach(s => obs.observe(s));
   });
-  $("#footerText").textContent = data.footer;
 
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      entry.target.classList.add("visible");
-      entry.target.querySelectorAll?.(".bar-fill").forEach((bar) => bar.style.width = bar.dataset.width);
-      revealObserver.unobserve(entry.target);
-    });
-  }, { threshold: .15 });
-  document.querySelectorAll(".reveal").forEach((node) => revealObserver.observe(node));
-
-  const countObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      const node = entry.target;
-      animateCount(node);
-      countObserver.unobserve(node);
-    });
-  }, { threshold: .5 });
-  document.querySelectorAll("[data-count]").forEach((node) => countObserver.observe(node));
-
-  function animateCount(node) {
-    const end = Number(node.dataset.count);
-    const decimals = Number(node.dataset.decimals || 0);
-    const suffix = node.dataset.suffix || "";
-    const start = performance.now();
-    const duration = 1200;
-    const tick = (now) => {
-      const p = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - p, 3);
-      node.textContent = (end * eased).toFixed(decimals) + suffix;
-      if (p < 1) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  }
-
-  const sectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      document.querySelectorAll(".nav a").forEach((a) => a.classList.toggle("active", a.getAttribute("href") === `#${entry.target.id}`));
-    });
-  }, { rootMargin: "-35% 0px -55%", threshold: 0 });
-  document.querySelectorAll("[id].story-section, .photo-break[id]").forEach((section) => sectionObserver.observe(section));
-
-  window.addEventListener("scroll", () => {
+  const header = $('#siteHeader');
+  const progress = $('#progressBar');
+  const navLinks = $$('#storyNav a');
+  const sectionsForNav = navItems.map(n => document.getElementById(n.id)).filter(Boolean);
+  const onScroll = () => {
     const max = document.documentElement.scrollHeight - innerHeight;
-    $("#progressBar").style.width = `${max > 0 ? (scrollY / max) * 100 : 0}%`;
-  }, { passive: true });
+    progress.style.width = `${max > 0 ? scrollY/max*100 : 0}%`;
+    header.classList.toggle('is-solid', scrollY > innerHeight * .7);
+    let current = sectionsForNav[0]?.id;
+    sectionsForNav.forEach(s => { if (s.getBoundingClientRect().top <= 130) current = s.id; });
+    navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${current}`));
+  };
+  addEventListener('scroll', onScroll, { passive:true }); onScroll();
 
-  const menuBtn = $("#menuBtn");
-  menuBtn.addEventListener("click", () => {
-    const open = nav.classList.toggle("open");
-    menuBtn.setAttribute("aria-expanded", String(open));
-  });
-  nav.addEventListener("click", () => {
-    nav.classList.remove("open");
-    menuBtn.setAttribute("aria-expanded", "false");
-  });
+  const navToggle = $('#navToggle');
+  navToggle.addEventListener('click', () => { const open = $('#storyNav').classList.toggle('open'); navToggle.setAttribute('aria-expanded', String(open)); });
+  navLinks.forEach(a => a.addEventListener('click', () => { $('#storyNav').classList.remove('open'); navToggle.setAttribute('aria-expanded','false'); }));
 })();
