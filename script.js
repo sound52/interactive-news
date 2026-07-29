@@ -1,116 +1,26 @@
-(() => {
-  const data = window.STORY;
-  if (!data) return;
-  const $ = (s, root = document) => root.querySelector(s);
-  const $$ = (s, root = document) => [...root.querySelectorAll(s)];
-  const esc = (v = "") => String(v).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+const $=(s,c=document)=>c.querySelector(s);const $$=(s,c=document)=>[...c.querySelectorAll(s)];
 
-  document.title = data.meta.title;
-  $('meta[name="description"]').setAttribute('content', data.meta.description);
-  $('meta[property="og:title"]').setAttribute('content', data.meta.title);
-  $('meta[property="og:description"]').setAttribute('content', data.meta.description);
-  $('meta[property="og:image"]').setAttribute('content', data.meta.image);
-  $('#brandText').textContent = data.meta.brand;
+window.addEventListener('scroll',()=>{const h=document.documentElement;const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;$('#progressBar').style.width=`${p}%`});
 
-  $('#heroKicker').textContent = data.hero.kicker;
-  $('#heroTitle').textContent = data.hero.title;
-  $('#heroDeck').textContent = data.hero.deck;
-  $('#heroByline').textContent = data.hero.byline;
-  $('#heroMedia').style.backgroundImage = `url("${data.hero.image}")`;
-  $('#introLead').textContent = data.intro.lead;
-  $('#introBody').innerHTML = data.intro.body.map(p => `<p>${esc(p)}</p>`).join('');
+const revealObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.35});
+$$('.reveal,.reveal-card').forEach(el=>revealObserver.observe(el));
 
-  $('#statGrid').innerHTML = data.stats.map((s, i) => `
-    <div class="stat-card reveal">
-      <div class="stat-value"><span class="counter" data-value="${Number(s.value)}">0</span><span>${esc(s.suffix)}</span></div>
-      <div class="stat-label">${esc(s.label)}</div>
-      <div class="stat-note">${esc(s.note || '')}</div>
-    </div>`).join('');
+const countObserver=new IntersectionObserver(entries=>entries.forEach(e=>{if(!e.isIntersecting||e.target.dataset.done)return;e.target.dataset.done='1';const end=Number(e.target.dataset.count);const start=performance.now();const dur=1300;function tick(now){const t=Math.min(1,(now-start)/dur);e.target.textContent=Math.floor(end*(1-Math.pow(1-t,3))).toLocaleString('ko-KR');if(t<1)requestAnimationFrame(tick)}requestAnimationFrame(tick)}),{threshold:.6});
+$$('[data-count]').forEach(el=>countObserver.observe(el));
 
-  const navItems = [{ id: 'intro', nav: '기사' }, ...data.sections.map(s => ({ id: s.id, nav: s.nav })), { id:'outro', nav:'결론' }];
-  $('#storyNav').innerHTML = navItems.map(n => `<a href="#${esc(n.id)}">${esc(n.nav)}</a>`).join('');
+function linePath(points){return points.map((p,i)=>`${i?'L':'M'} ${p[0]} ${p[1]}`).join(' ')}
+function svgEl(name,attrs={}){const n=document.createElementNS('http://www.w3.org/2000/svg',name);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));return n}
 
-  const heading = s => `<div class="section-heading reveal"><p class="section-label">${esc(s.label || '')}</p><h2>${esc(s.title || '')}</h2>${s.description ? `<p>${esc(s.description)}</p>` : ''}</div>`;
-  const sections = data.sections.map(s => {
-    if (s.type === 'scrolly') {
-      const imgs = s.steps.map((x,i)=>`<img src="${esc(x.image)}" alt="${esc(x.title)}" class="${i===0?'active':''}" data-scene="${i}">`).join('');
-      const steps = s.steps.map((x,i)=>`<div class="scrolly-step" data-step="${i}"><div class="step-card"><span class="step-no">0${i+1}</span><h3>${esc(x.title)}</h3><p>${esc(x.text)}</p></div></div>`).join('');
-      return `<section class="story-section scrolly" id="${esc(s.id)}"><div class="scrolly-visual">${imgs}</div><div class="scrolly-steps">${heading(s)}${steps}</div></section>`;
-    }
-    if (s.type === 'split') {
-      return `<section class="story-section split-section" id="${esc(s.id)}"><div class="split-copy"><div class="split-copy-inner reveal"><p class="section-label">${esc(s.label)}</p><h2>${esc(s.title)}</h2>${s.body.map(p=>`<p>${esc(p)}</p>`).join('')}</div></div><div class="split-media" style="background-image:url('${esc(s.image)}')"></div></section>`;
-    }
-    if (s.type === 'bars') {
-      return `<section class="story-section standard-section" id="${esc(s.id)}">${heading(s)}<div class="bar-chart">${s.items.map(x=>`<div class="bar-item reveal"><div class="bar-label">${esc(x.label)}</div><div class="bar-track"><div class="bar-fill" data-width="${Math.min(100, Number(x.value)/Number(s.max)*100)}"></div></div><div class="bar-value">${esc(x.value)}${esc(s.unit)}</div></div>`).join('')}</div></section>`;
-    }
-    if (s.type === 'cards') {
-      return `<section class="story-section standard-section" id="${esc(s.id)}">${heading(s)}<div class="card-grid">${s.items.map(x=>`<article class="story-card reveal"><div class="icon">${esc(x.icon)}</div><h3>${esc(x.title)}</h3><p>${esc(x.text)}</p></article>`).join('')}</div></section>`;
-    }
-    if (s.type === 'timeline') {
-      return `<section class="story-section standard-section" id="${esc(s.id)}">${heading(s)}<div class="timeline">${s.items.map(x=>`<div class="timeline-item reveal"><div class="timeline-date">${esc(x.date)}</div><h3>${esc(x.title)}</h3><p>${esc(x.text)}</p></div>`).join('')}</div></section>`;
-    }
-    if (s.type === 'fullbleed') {
-      return `<section class="story-section fullbleed" id="${esc(s.id)}" style="background-image:url('${esc(s.image)}')"><div class="fullbleed-copy reveal"><blockquote>${esc(s.quote)}</blockquote><cite>${esc(s.cite)}</cite></div></section>`;
-    }
-    if (s.type === 'gallery') {
-      const imgs = [...s.images, ...s.images].map((src,i)=>`<img src="${esc(src)}" alt="현장 사진 ${i%s.images.length+1}">`).join('');
-      return `<section class="story-section standard-section" id="${esc(s.id)}">${heading(s)}<div class="gallery-strip"><div class="gallery-track">${imgs}</div></div></section>`;
-    }
-    return '';
-  }).join('');
-  $('#storySections').innerHTML = sections;
+function drawNational(){const svg=$('#nationalChart');const data=[['2021',4153],['2022',4235],['2023',5155],['2024',5432],['2025',5107]];const W=900,H=480,m={l:75,r:45,t:45,b:70};const max=6000;[0,2000,4000,6000].forEach(v=>{const y=m.t+(H-m.t-m.b)*(1-v/max);svg.append(svgEl('line',{x1:m.l,y1:y,x2:W-m.r,y2:y,class:'chart-grid'}));const t=svgEl('text',{x:m.l-14,y:y+6,'text-anchor':'end',class:'chart-label'});t.textContent=v.toLocaleString();svg.append(t)});const pts=data.map((d,i)=>[m.l+i*(W-m.l-m.r)/(data.length-1),m.t+(H-m.t-m.b)*(1-d[1]/max)]);svg.append(svgEl('path',{d:linePath(pts),class:'national-line'}));pts.forEach((p,i)=>{svg.append(svgEl('circle',{cx:p[0],cy:p[1],r:9,class:'chart-dot'}));const v=svgEl('text',{x:p[0],y:p[1]-20,'text-anchor':'middle',class:'chart-value',fill:'#ff7a2f'});v.textContent=data[i][1].toLocaleString();svg.append(v);const l=svgEl('text',{x:p[0],y:H-28,'text-anchor':'middle',class:'chart-label'});l.textContent=data[i][0];svg.append(l)});const x2024=pts[3][0]-((pts[3][0]-pts[2][0])*.5);svg.append(svgEl('line',{x1:x2024,y1:m.t,x2:x2024,y2:H-m.b,class:'law-marker'}));const lab=svgEl('text',{x:x2024+8,y:m.t+18,class:'law-marker-label'});lab.textContent='2024.7 법 시행';svg.append(lab)}
 
-  $('#outroLabel').textContent = data.outro.label;
-  $('#outroTitle').textContent = data.outro.title;
-  $('#outroBody').innerHTML = data.outro.body.map(p=>`<p>${esc(p)}</p>`).join('');
-  $('#relatedLinks').innerHTML = data.outro.links.map(l=>`<a href="${esc(l.url)}">${esc(l.label)}</a>`).join('');
-  $('#footerText').textContent = data.footer;
+drawNational();
 
-  const revealObserver = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (!e.isIntersecting) return;
-      e.target.classList.add('visible');
-      e.target.querySelectorAll?.('.bar-fill').forEach(b => b.style.width = `${b.dataset.width}%`);
-      if (e.target.classList.contains('bar-item')) $('.bar-fill', e.target).style.width = `${$('.bar-fill', e.target).dataset.width}%`;
-      revealObserver.unobserve(e.target);
-    });
-  }, { threshold: .16 });
-  $$('.reveal, .bar-item').forEach(el => revealObserver.observe(el));
+const regionData={daejeon:{name:'대전',color:'#4ab4f8',values:[70,107,114,96,80]},chungnam:{name:'충남',color:'#ffbe3b',values:[201,256,253,243,121]},chungbuk:{name:'충북',color:'#ff7a2f',values:[98,145,135,117,53]}};
+function drawRegion(active='all'){const svg=$('#regionChart');svg.innerHTML='';const years=['2022','2023','2024','2025','2026.06'];const W=900,H=500,m={l:70,r:45,t:40,b:75},max=300;[0,100,200,300].forEach(v=>{const y=m.t+(H-m.t-m.b)*(1-v/max);svg.append(svgEl('line',{x1:m.l,y1:y,x2:W-m.r,y2:y,class:'chart-grid'}));const t=svgEl('text',{x:m.l-12,y:y+6,'text-anchor':'end',class:'chart-label'});t.textContent=v;svg.append(t)});years.forEach((y,i)=>{const x=m.l+i*(W-m.l-m.r)/(years.length-1);const t=svgEl('text',{x,y:H-30,'text-anchor':'middle',class:'chart-label'});t.textContent=y;svg.append(t)});Object.entries(regionData).forEach(([key,r])=>{const pts=r.values.map((v,i)=>[m.l+i*(W-m.l-m.r)/(years.length-1),m.t+(H-m.t-m.b)*(1-v/max)]);const path=svgEl('path',{d:linePath(pts),class:`region-line ${active!=='all'&&active!==key?'region-muted':''}`,stroke:r.color});svg.append(path);pts.forEach((p,i)=>{svg.append(svgEl('circle',{cx:p[0],cy:p[1],r:8,class:`region-dot ${active!=='all'&&active!==key?'region-muted':''}`,stroke:r.color}));const txt=svgEl('text',{x:p[0],y:p[1]-17,'text-anchor':'middle',class:`chart-value ${active!=='all'&&active!==key?'region-muted':''}`,fill:r.color});txt.textContent=r.values[i];svg.append(txt)});const name=svgEl('text',{x:pts[0][0]+5,y:pts[0][1]+30,class:`chart-value ${active!=='all'&&active!==key?'region-muted':''}`,fill:r.color});name.textContent=r.name;svg.append(name)});const band=svgEl('rect',{x:m.l+3*(W-m.l-m.r)/4+8,y:m.t,width:(W-m.l-m.r)/4-8,height:H-m.t-m.b,fill:'#111',opacity:'.035'});svg.insertBefore(band,svg.firstChild)}
+drawRegion();
+$$('.region-btn').forEach(btn=>btn.addEventListener('click',()=>{$$('.region-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');drawRegion(btn.dataset.region)}));
 
-  const counterObserver = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (!e.isIntersecting) return;
-      const el = e.target, target = Number(el.dataset.value), start = performance.now(), duration = 1100;
-      const tick = now => { const p = Math.min(1,(now-start)/duration); el.textContent = (target*p).toFixed(Number.isInteger(target)?0:1); if(p<1) requestAnimationFrame(tick); };
-      requestAnimationFrame(tick); counterObserver.unobserve(el);
-    });
-  }, { threshold: .6 });
-  $$('.counter').forEach(el => counterObserver.observe(el));
+function makeDots(){const box=$('#dotMatrix');for(let i=0;i<243;i++){const d=document.createElement('span');d.className='dot';if(i>=224&&i<236)d.classList.add('minor');else if(i>=236&&i<240)d.classList.add('law');else if(i>=240)d.classList.add('unclassified');box.append(d)}}makeDots();
 
-  $$('.scrolly').forEach(scrolly => {
-    const images = $$('[data-scene]', scrolly);
-    const steps = $$('[data-step]', scrolly);
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if(!e.isIntersecting) return; const i = Number(e.target.dataset.step); images.forEach((im,j)=>im.classList.toggle('active', i===j)); });
-    }, { rootMargin:'-35% 0px -45% 0px', threshold:0 });
-    steps.forEach(s => obs.observe(s));
-  });
-
-  const header = $('#siteHeader');
-  const progress = $('#progressBar');
-  const navLinks = $$('#storyNav a');
-  const sectionsForNav = navItems.map(n => document.getElementById(n.id)).filter(Boolean);
-  const onScroll = () => {
-    const max = document.documentElement.scrollHeight - innerHeight;
-    progress.style.width = `${max > 0 ? scrollY/max*100 : 0}%`;
-    header.classList.toggle('is-solid', scrollY > innerHeight * .7);
-    let current = sectionsForNav[0]?.id;
-    sectionsForNav.forEach(s => { if (s.getBoundingClientRect().top <= 130) current = s.id; });
-    navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${current}`));
-  };
-  addEventListener('scroll', onScroll, { passive:true }); onScroll();
-
-  const navToggle = $('#navToggle');
-  navToggle.addEventListener('click', () => { const open = $('#storyNav').classList.toggle('open'); navToggle.setAttribute('aria-expanded', String(open)); });
-  navLinks.forEach(a => a.addEventListener('click', () => { $('#storyNav').classList.remove('open'); navToggle.setAttribute('aria-expanded','false'); }));
-})();
+const choiceText={ignore:'실제 폭발물이나 흉기 사건이라면 국민의 생명과 안전에 돌이킬 수 없는 피해가 발생할 수 있다. 허위 가능성만으로 출동하지 않는 선택은 현실적으로 어렵다.',respond:'허위신고라도 경찰·소방·군 등 대규모 인력이 투입된다. 접수 단계에서 진위를 단정할 수 없기 때문에 경찰은 실제 상황을 전제로 대응할 수밖에 없다.'};
+$$('[data-choice]').forEach(btn=>btn.addEventListener('click',()=>{$$('[data-choice]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');$('#choiceResult').textContent=choiceText[btn.dataset.choice]}));

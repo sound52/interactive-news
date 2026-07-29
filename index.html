@@ -3,74 +3,223 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="지역 현장을 깊이 있게 보여주는 인터랙티브 뉴스" />
-  <meta property="og:type" content="article" />
-  <meta property="og:title" content="인터랙티브 뉴스" />
-  <meta property="og:description" content="사진과 데이터로 읽는 지역 이야기" />
-  <meta property="og:image" content="assets/hero.svg" />
-  <title>인터랙티브 뉴스</title>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <meta name="description" content="장난전화에서 AI 음성 변조와 온라인 공모까지, 진화하는 112 허위신고와 처벌 체계의 공백을 짚는다." />
+  <meta property="og:title" content="112에 걸려온 거짓말" />
+  <meta property="og:description" content="법 시행 2년에도 이어지는 허위신고, 처벌은 왜 따라가지 못하나." />
+  <meta property="og:image" content="assets/swatting-school.png" />
+  <title>112에 걸려온 거짓말</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="reading-progress" aria-hidden="true"><span id="progressBar"></span></div>
+  <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
 
-  <header class="site-header" id="siteHeader">
-    <a class="brand" href="#top" aria-label="기사 처음으로">
-      <span class="brand-mark">C</span>
-      <span id="brandText">INTERACTIVE</span>
-    </a>
-    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="storyNav">목차</button>
-    <nav class="story-nav" id="storyNav" aria-label="기사 목차"></nav>
+  <header class="hero" id="top">
+    <img class="hero__image" src="assets/swatting-school.png" alt="허위 폭발물 신고로 출동한 경찰·소방과 해커 공간을 대비한 이미지" />
+    <div class="hero__shade"></div>
+    <div class="hero__content">
+      <p class="eyebrow">INTERACTIVE NEWS</p>
+      <h1>112에 걸려온<br />거짓말</h1>
+      <p class="hero__deck">장난전화에서 AI 음성 변조와 온라인 공모까지<br />진화하는 허위신고, 처벌은 따라가지 못했다</p>
+      <p class="hero__credit">취재 윤소리 · 그래픽 자료 제공 이미지 활용</p>
+    </div>
+    <a class="scroll-cue" href="#opening">스크롤해 읽기 <span>↓</span></a>
   </header>
 
-  <main id="top">
-    <section class="hero" id="hero">
-      <div class="hero-media" id="heroMedia" role="img" aria-label="대표 이미지"></div>
-      <div class="hero-shade"></div>
-      <div class="hero-copy">
-        <p class="kicker" id="heroKicker"></p>
-        <h1 id="heroTitle"></h1>
-        <p class="hero-deck" id="heroDeck"></p>
-        <p class="hero-byline" id="heroByline"></p>
+  <main>
+    <section class="opening dark-section" id="opening">
+      <div class="opening__sticky">
+        <p class="quote-line reveal">“○○고등학교에 폭발물을 설치했다.”</p>
+        <p class="quote-line reveal">“오전 10시 폭발할 것.”</p>
+        <div class="opening__facts">
+          <div class="fact reveal"><strong>1250여 명</strong><span>학생·교직원 대피</span></div>
+          <div class="fact reveal"><strong>수백 명</strong><span>경찰·소방·군 출동</span></div>
+          <div class="fact reveal"><strong>특이점 없음</strong><span>결과는 허위신고</span></div>
+        </div>
+        <p class="opening__conclusion reveal">허위로 의심돼도 경찰은 실제 상황을 전제로 출동해야 한다.</p>
       </div>
-      <a class="scroll-hint" href="#intro" aria-label="본문으로 이동"><span></span>SCROLL</a>
     </section>
 
-    <article>
-      <section class="intro prose-section" id="intro">
-        <div class="prose reveal">
-          <p class="lead" id="introLead"></p>
-          <div id="introBody"></div>
-        </div>
-      </section>
+    <section class="story-section white-section" id="national">
+      <div class="section-head">
+        <p class="section-index">01</p>
+        <h2>법 시행 뒤에도<br />연간 5000건대</h2>
+        <p>112신고처리법은 2024년 7월 시행됐다. 그러나 지난해 허위신고는 5107건으로 집계됐다.</p>
+      </div>
+      <div class="metric-grid">
+        <div class="metric"><span class="metric__value" data-count="5107">0</span><span class="metric__unit">건</span><p>2025년 전국 허위신고</p></div>
+        <div class="metric"><span class="metric__value" data-count="14">0</span><span class="metric__unit">건</span><p>하루 평균 약</p></div>
+      </div>
+      <div class="chart-wrap">
+        <svg id="nationalChart" viewBox="0 0 900 480" role="img" aria-label="2021년부터 2025년까지 전국 112 허위신고 추이"></svg>
+        <p class="chart-note">출처: 경찰청. 2024년 7월 112신고처리법 시행.</p>
+      </div>
+    </section>
 
-      <section class="stat-band" id="keyNumbers" aria-label="핵심 수치">
-        <div class="section-shell">
-          <p class="section-label">KEY NUMBERS</p>
-          <div class="stat-grid" id="statGrid"></div>
-        </div>
-      </section>
+    <section class="story-section soft-section" id="chungcheong">
+      <div class="section-head">
+        <p class="section-index">02</p>
+        <h2>충청권도 전국과<br />비슷한 흐름</h2>
+        <p>대전·충남·충북 모두 2023년 전후 증가한 뒤 증감을 반복했다. 2026년 수치는 6월까지의 누계다.</p>
+      </div>
+      <div class="region-controls" aria-label="지역 그래프 선택">
+        <button class="region-btn active" data-region="all" type="button">전체</button>
+        <button class="region-btn" data-region="daejeon" type="button">대전</button>
+        <button class="region-btn" data-region="chungnam" type="button">충남</button>
+        <button class="region-btn" data-region="chungbuk" type="button">충북</button>
+      </div>
+      <div class="chart-wrap region-chart-wrap">
+        <svg id="regionChart" viewBox="0 0 900 500" role="img" aria-label="2022년부터 2026년 6월까지 충청권 112 허위신고 추이"></svg>
+        <p class="chart-note">※ 2026년은 6월까지 집계. 출처: 각 시도청·경찰청.</p>
+      </div>
+      <figure class="image-card">
+        <img src="assets/infographic.png" alt="충청권 112 허위신고 추이와 적용 법률을 정리한 인포그래픽" />
+        <figcaption>충청권 허위신고 추이와 적용 법률. 원자료에 제시된 수치를 바탕으로 구성.</figcaption>
+      </figure>
+    </section>
 
-      <div id="storySections"></div>
+    <section class="story-section white-section" id="law">
+      <div class="section-head narrow">
+        <p class="section-index">03</p>
+        <h2>같은 허위신고,<br />처분은 세 갈래</h2>
+        <p>신고 내용의 중대성, 반복성, 고의성, 행위자의 상태를 종합해 형사입건·즉결심판·과태료 가운데 처분이 결정된다.</p>
+      </div>
+      <div class="law-grid">
+        <article class="law-card reveal-card">
+          <span class="law-card__tag">형사입건</span>
+          <h3>위계에 의한<br />공무집행방해</h3>
+          <strong>5년 이하 징역<br />또는 1000만원 이하 벌금</strong>
+          <p>폭발물 설치나 흉기 난동 등 중대한 범죄가 발생한 것처럼 속여 대규모 출동을 유도한 경우 적용할 수 있다.</p>
+        </article>
+        <article class="law-card reveal-card">
+          <span class="law-card__tag">즉결심판</span>
+          <h3>경범죄처벌법</h3>
+          <strong>60만원 이하<br />벌금·구류·과료</strong>
+          <p>일반적인 허위신고는 대부분 경범죄처벌법에 따라 처리돼 왔다.</p>
+        </article>
+        <article class="law-card reveal-card accent-card">
+          <span class="law-card__tag">과태료</span>
+          <h3>112신고처리법</h3>
+          <strong>1회 200만원<br />반복 시 최대 500만원</strong>
+          <p>경범죄처벌법의 낮은 제재 수준을 보완하기 위해 2024년 7월 시행됐다.</p>
+        </article>
+      </div>
+      <blockquote class="big-question">“어떤 법을 적용할지 판단할 구체적인 내부 기준은 충분한가”</blockquote>
+    </section>
 
-      <section class="outro prose-section" id="outro">
-        <div class="prose reveal">
-          <p class="section-label" id="outroLabel"></p>
-          <h2 id="outroTitle"></h2>
-          <div id="outroBody"></div>
-          <div class="share-row" id="relatedLinks"></div>
+    <section class="story-section dark-section" id="disposition">
+      <div class="section-head light-head">
+        <p class="section-index">04</p>
+        <h2>법은 생겼지만<br />적용은 1.6%</h2>
+        <p>2025년 충남청 허위신고 243건 가운데 기사에서 확인된 주요 처분 유형을 시각화했다.</p>
+      </div>
+      <div class="disposition-layout">
+        <div id="dotMatrix" class="dot-matrix" aria-label="충남청 허위신고 주요 처분 분포"></div>
+        <div class="disposition-copy">
+          <div><strong>224건</strong><span>경범죄처벌법상 즉결심판<br />92.2%</span></div>
+          <div><strong>12건</strong><span>위계에 의한 공무집행방해<br />4.9%</span></div>
+          <div><strong>4건</strong><span>112신고처리법 과태료<br />1.6%</span></div>
+          <p class="data-caution">※ 전체 243건과 기사에 제시된 세부 처분 합계 240건 사이에 3건 차이가 있어, 임의로 유형을 추가하지 않았다.</p>
         </div>
-      </section>
-    </article>
+      </div>
+    </section>
+
+    <section class="case-section white-section" id="repeat-call">
+      <div class="case-number">CASE 01</div>
+      <div class="case-grid">
+        <div class="case-copy">
+          <h2>11개월 동안<br /><em>1만8000여 차례</em></h2>
+          <p>대전의 60대 여성은 2022년 5월부터 2023년 4월까지 경찰에 장난전화를 걸다 재판에 넘겨졌다.</p>
+          <div class="case-result"><span>경범죄처벌법상 벌금</span><strong>20만원</strong></div>
+          <p>이후에도 장난전화를 반복하면서 처벌 실효성을 둘러싼 논란이 제기됐다.</p>
+        </div>
+        <div class="phone-visual" aria-hidden="true">
+          <div class="ring ring-1"></div><div class="ring ring-2"></div><div class="ring ring-3"></div>
+          <div class="phone-icon">112</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ai-section" id="ai-case">
+      <img class="ai-bg" src="assets/ai-control-room.png" alt="AI 음성 변조 범죄와 경찰·소방 대응센터를 표현한 이미지" />
+      <div class="ai-overlay"></div>
+      <div class="ai-content">
+        <p class="case-number">CASE 02</p>
+        <h2>AI가 목소리를<br />바꿨다</h2>
+        <div class="ai-facts">
+          <div><span>범행 목적</span><strong>세미나 연기</strong></div>
+          <div><span>대응 인력</span><strong>경찰·소방 등 135명</strong></div>
+          <div><span>수색 시간</span><strong>3시간 이상</strong></div>
+          <div><span>호텔 피해</span><strong>900만원 이상 환불 피해</strong></div>
+          <div><span>법원 판단</span><strong>징역 1년</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="story-section white-section" id="evolution">
+      <div class="section-head">
+        <p class="section-index">05</p>
+        <h2>장난전화에서<br />‘스와팅’ 유사 범죄로</h2>
+        <p>허위신고는 반복 전화 수준을 넘어 타인 사칭, 온라인 역할 분담, AI 음성 변조, 해외 플랫폼·서버 이용으로 고도화되고 있다.</p>
+      </div>
+      <div class="evolution-timeline">
+        <div class="evo-step"><span>01</span><h3>단순 장난전화</h3><p>음주 상태나 개인적 이유로 반복 신고.</p></div>
+        <div class="evo-step"><span>02</span><h3>타인 사칭</h3><p>명의·전화번호를 도용해 신고자를 숨김.</p></div>
+        <div class="evo-step"><span>03</span><h3>온라인 공모</h3><p>디스코드 등에서 역할을 나눠 범행.</p></div>
+        <div class="evo-step"><span>04</span><h3>AI 음성 변조</h3><p>실제 목소리처럼 꾸며 초기 식별을 방해.</p></div>
+        <div class="evo-step"><span>05</span><h3>해외 서버·IP</h3><p>국내 기관만으로 추적하기 어려운 구조.</p></div>
+      </div>
+      <div class="swatting-box">
+        <strong>SWATTING</strong>
+        <p>테러·인질극 등 중대한 범죄가 발생한 것처럼 속여 경찰특공대 등 대규모 출동을 유도하는 허위신고 범죄. 국내 사건은 기사에서 ‘스와팅과 유사한 양상’으로 설명됐다.</p>
+      </div>
+    </section>
+
+    <section class="choice-section soft-section" id="dilemma">
+      <div class="section-head narrow">
+        <p class="section-index">06</p>
+        <h2>경찰은 왜<br />일단 출동할 수밖에 없나</h2>
+        <p>신고 접수 단계에서 허위 여부를 단정할 수 없기 때문이다. 아래 선택지를 눌러 결과를 확인해 보자.</p>
+      </div>
+      <div class="choice-buttons">
+        <button type="button" data-choice="ignore">허위로 의심되니 출동하지 않는다</button>
+        <button type="button" data-choice="respond">실제 상황을 전제로 출동한다</button>
+      </div>
+      <div id="choiceResult" class="choice-result" aria-live="polite">선택하면 결과가 표시된다.</div>
+    </section>
+
+    <section class="story-section white-section" id="solutions">
+      <div class="section-head">
+        <p class="section-index">07</p>
+        <h2>처벌 강화만으로<br />충분하지 않다</h2>
+        <p>전문가들은 처분의 일관성, 위험도에 따른 차등 대응, AI 악용 기준, 국내외 공조체계를 함께 보완해야 한다고 제안했다.</p>
+      </div>
+      <div class="solution-grid">
+        <article><span>01</span><h3>전국 공통 처분 가이드라인</h3><p>사건별 편차를 줄이고 현장 판단의 일관성을 높인다.</p></article>
+        <article><span>02</span><h3>허위신고 위험등급제</h3><p>단순 장난과 폭발물·흉기 난동 허위신고를 구분해 대응한다.</p></article>
+        <article><span>03</span><h3>AI 악용 가중 요소</h3><p>계획성과 고의성이 인정되는 AI 음성 변조 수법을 별도로 고려한다.</p></article>
+        <article><span>04</span><h3>플랫폼·국제 공조</h3><p>해외 서버와 IP를 이용한 범죄에 대응할 협력체계를 강화한다.</p></article>
+      </div>
+      <blockquote class="expert-quote">“허위신고는 처벌받는다는 설명을 넘어, 왜 시민 안전과 공권력을 위협하는 범죄인지 알려야 한다.”</blockquote>
+    </section>
+
+    <section class="ending">
+      <img src="assets/swatting-school.png" alt="학교 주변에 출동한 경찰·소방의 모습" />
+      <div class="ending__overlay"></div>
+      <div class="ending__copy">
+        <p>허위신고 한 통에도 경찰은 실제 위험을 전제로 움직인다.</p>
+        <h2>범죄가 진화하는 속도를<br />처벌과 대응 체계가 따라가지 못하고 있다.</h2>
+        <a href="#top">처음으로 ↑</a>
+      </div>
+    </section>
   </main>
 
-  <footer class="site-footer">
-    <p id="footerText"></p>
+  <footer>
+    <p>기사에 제시된 수치와 사례만 사용해 제작한 인터랙티브 뉴스 시안.</p>
+    <p>© 충청투데이 Interactive News</p>
   </footer>
 
-  <script src="content.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
