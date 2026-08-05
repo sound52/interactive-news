@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인터랙티브 리포트: 기후변화와 도시의 미래</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 상단 스크롤 진행 바 -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- 헤더 / 히어로 섹션 -->
+    <header class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <span class="badge">SPECIAL REPORT</span>
+            <h1>기후변화와 도시의 미래</h1>
+            <p class="subtitle">우리가 살고 있는 도시는 2050년 어떤 모습을 하고 있을까요?</p>
+            <div class="meta">
+                <span>작성일: 2026. 08. 05</span>
+                <span>•</span>
+                <span>읽는 시간: 약 3분</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 서론 -->
+        <section class="intro-section">
+            <p class="lead">
+                해수면 상승과 이상 기후는 더 이상 먼 미래의 이야기가 아닙니다. 글로벌 대도시들은 이미 기후 위기에 대응하기 위해 도시 구조 자체를 바꾸는 거대한 실험을 시작했습니다.
+            </p>
+        </section>
+
+        <!-- 인터랙티브 스티키 스크롤 섹션 -->
+        <section class="interactive-section">
+            <div class="story-grid">
+                <!-- 스크롤에 따라 활성화되는 텍스트 카드들 -->
+                <div class="story-cards">
+                    <div class="card active" data-step="1">
+                        <h3>01. 해수면 상승의 위협</h3>
+                        <p>해안가에 위치한 세계 주요 도시들의 30% 이상이 2050년까지 침수 위험에 직면해 있습니다. 폭풍우와 고조 현상이 결합할 경우 피해 규모는 가늠하기 어렵습니다.</p>
+                    </div>
+                    <div class="card" data-step="2">
+                        <h3>02. 도시 열섬 현상 심화</h3>
+                        <p>아스팔트와 콘크리트로 둘러싸인 도심 지역은 외각 지역보다 평균 온도가 3~5도 높습니다. 극심한 폭염은 취약계층의 생존을 위협하는 주요 요인입니다.</p>
+                    </div>
+                    <div class="card" data-step="3">
+                        <h3>03. 생태계 복원과 스펀지 도시</h3>
+                        <p>빗물을 흡수하고 저장하는 '스펀지 도시' 기법과 녹지 공간 확충은 도시의 온도 감소 및 홍수 예방에 탁월한 효과를 보이고 있습니다.</p>
+                    </div>
+                </div>
+
+                <!-- 텍스트 변화에 반응하는 동적 이미지 영역 -->
+                <div class="visual-container">
+                    <div class="visual-wrapper">
+                        <img id="dynamicImage" src="https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1000&q=80" alt="도시 전경">
+                        <div class="image-caption" id="imageCaption">해안가 도시의 현재 전경</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 클릭 가능한 인터랙티브 요소 (데이터 핫스팟) -->
+        <section class="hotspot-section">
+            <h2>주요 대응 기술 클릭해보기</h2>
+            <p class="section-desc">각 요소를 클릭하여 최신 방재 모듈에 대한 상세 정보를 확인해보세요.</p>
+
+            <div class="hotspot-grid">
+                <button class="hotspot-btn" data-title="해상 부유식 도시" data-desc="해수면 상승에 유연하게 대응할 수 있는 모듈형 해상 거주 공간입니다. 에너지 및 수자원을 자급자족하도록 설계됩니다." data-img="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80">
+                    🌊 해상 부유식 도시
+                </button>
+                <button class="hotspot-btn" data-title="수직 숲 빌딩" data-desc="건물 외벽 전체에 수목을 심어 공기 정화, 단열 효과, 도심 열섬 현상 완화를 동시에 달성하는 건축 형태입니다." data-img="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80">
+                    🏢 수직 숲 빌딩
+                </button>
+                <button class="hotspot-btn" data-title="지하 대형 투수 저류조" data-desc="폭우 시 발생하는 집중 호우 수량을 지하에 임시 저장하여 도심 침수를 막아주는 대형 치수 시설입니다." data-img="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80">
+                    🌧️ 지하 저류 시설
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- 모달 창 -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <img id="modalImg" src="" alt="상세 이미지">
+            <h3 id="modalTitle"></h3>
+            <p id="modalDesc"></p>
+        </div>
+    </div>
+
+    <!-- 푸터 -->
+    <footer>
+        <p>&copy; 2026 Interactive News Lab. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
