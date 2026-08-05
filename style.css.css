@@ -1,0 +1,346 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    color: #222222;
+    background-color: #f8f9fa;
+    word-break: keep-all;
+}
+
+/* 스크롤 프로그레스 바 */
+.progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background-color: transparent;
+    z-index: 1000;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #d90429, #ef233c);
+    width: 0%;
+    transition: width 0.1s ease-out;
+}
+
+/* 히어로 섹션 */
+.hero {
+    position: relative;
+    height: 75vh;
+    min-height: 480px;
+    background-image: url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    text-align: center;
+    padding: 0 20px;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.85));
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 6px 14px;
+    background-color: #d90429;
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-radius: 20px;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+.hero h1 {
+    font-size: 2.6rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+    line-height: 1.3;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #e0e0e0;
+    margin-bottom: 25px;
+}
+
+.meta {
+    font-size: 0.9rem;
+    color: #cccccc;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* 컨테이너 */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 20px;
+}
+
+.intro-section {
+    max-width: 750px;
+    margin: 0 auto 80px auto;
+    text-align: center;
+}
+
+.lead {
+    font-size: 1.2rem;
+    color: #333333;
+    font-weight: 500;
+    line-height: 1.8;
+}
+
+/* 스크롤 스토리 인터랙션 */
+.story-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    position: relative;
+}
+
+.story-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 280px;
+    padding-bottom: 180px;
+}
+
+.card {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    border-left: 5px solid #e9ecef;
+    opacity: 0.35;
+    transform: translateY(20px);
+    transition: all 0.4s ease;
+}
+
+.card.active {
+    opacity: 1;
+    transform: translateY(0);
+    border-left-color: #d90429;
+    box-shadow: 0 8px 30px rgba(217, 4, 41, 0.15);
+}
+
+.card h3 {
+    font-size: 1.35rem;
+    margin-bottom: 12px;
+    color: #111111;
+}
+
+.card p {
+    color: #555555;
+    font-size: 1rem;
+}
+
+/* 고정 이미지 */
+.visual-container {
+    position: sticky;
+    top: 100px;
+    height: calc(100vh - 200px);
+    max-height: 480px;
+    display: flex;
+    align-items: center;
+}
+
+.visual-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.visual-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.5s ease;
+}
+
+.image-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px 20px;
+    background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+    color: #ffffff;
+    font-size: 0.9rem;
+}
+
+/* 모달 그리드 버튼 섹션 */
+.hotspot-section {
+    margin-top: 100px;
+    text-align: center;
+}
+
+.hotspot-section h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.section-desc {
+    color: #6c757d;
+    margin-bottom: 35px;
+}
+
+.hotspot-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.hotspot-btn {
+    padding: 22px 15px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #2b2d42;
+    background-color: #ffffff;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.hotspot-btn:hover {
+    border-color: #d90429;
+    color: #d90429;
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(217,4,41,0.12);
+}
+
+/* 모달 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 2000;
+}
+
+.modal-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-content {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.open .modal-content {
+    transform: translateY(0);
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 1.8rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #888888;
+}
+
+.modal-content img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.modal-content h3 {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+}
+
+.modal-content p {
+    color: #444444;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* 푸터 */
+footer {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: #1a1a1a;
+    color: #888888;
+    font-size: 0.85rem;
+    margin-top: 100px;
+}
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 1.9rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+    }
+
+    .story-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .visual-container {
+        position: relative;
+        top: 0;
+        height: 240px;
+        order: -1;
+        margin-bottom: 20px;
+    }
+
+    .story-cards {
+        gap: 50px;
+        padding-bottom: 0;
+    }
+
+    .hotspot-grid {
+        grid-template-columns: 1fr;
+    }
+}

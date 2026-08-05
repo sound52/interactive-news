@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인터랙티브 리포트: 대전 0시 축제, 존폐 갈림길에 서다</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 상단 스크롤 진행 바 -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- 히어로 헤더 섹션 -->
+    <header class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <span class="badge">ISSUE FOCUS</span>
+            <h1>대전 0시 축제, 존폐 갈림길에 서다</h1>
+            <p class="subtitle">수십억 예산 투입과 지역 경제 활성화 vs 교통 마비와 실효성 논란</p>
+            <div class="meta">
+                <span>작성일: 2026. 08. 05</span>
+                <span>•</span>
+                <span>충청투데이 심층취재</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 서론 -->
+        <section class="intro-section">
+            <p class="lead">
+                대전의 대표 여름 축제로 자리잡은 '대전 0시 축제'. 매년 수백만 명의 방문객을 끌어 모으며 지역 경제의 효자 역할을 한다는 찬사와 함께, 예산 낭비와 원도심 교통 마비, 정체성 부재를 이유로 폐지 및 전면 재검토를 요구하는 목소리가 팽팽하게 대립하고 있습니다.
+            </p>
+        </section>
+
+        <!-- 스크롤 인터랙티브 섹션 -->
+        <section class="interactive-section">
+            <div class="story-grid">
+                <!-- 스크롤 카드 목록 -->
+                <div class="story-cards">
+                    <div class="card active" data-step="1">
+                        <h3>01. 화려한 흥행과 경제 효과</h3>
+                        <p>추진 측은 0시 축제가 원도심 상권에 온기를 불어넣고, 수백억 원에 달하는 직·간접 경제 파급효과를 창출했다고 강조합니다. 한여름 밤의 대표 야간 관광 브랜드로 자리잡았다는 평가입니다.</p>
+                    </div>
+                    <div class="card" data-step="2">
+                        <h3>02. 통제된 도로, 멈춰선 시민 일상</h3>
+                        <p>반면 축제기간 중앙로 일대 도로가 차단되면서 시내버스 우회와 극심한 교통 체증이 발생합니다. 인근 상인들과 주민들은 생활권 침해와 영업 방해를 호소하고 있습니다.</p>
+                    </div>
+                    <div class="card" data-step="3">
+                        <h3>03. 막대한 예산 투입과 정체성 논란</h3>
+                        <p>단기간 행사를 위해 수십억 원의 시비가 투입되는 것에 대한 비판도 거쌉니다. 대전만의 고유한 문화적 색채가 부족하고 대중가수 초청 위주의 일회성 행사에 그친다는 시의회의 지적이 이어집니다.</p>
+                    </div>
+                </div>
+
+                <!-- 고정 비주얼 영역 -->
+                <div class="visual-container">
+                    <div class="visual-wrapper">
+                        <img id="dynamicImage" src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1000&q=80" alt="축제 야경">
+                        <div class="image-caption" id="imageCaption">화려한 인파로 붐비는 0시 축제 현장</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 핵심 쟁점 모달 섹션 -->
+        <section class="hotspot-section">
+            <h2>핵심 쟁점 심층 분석</h2>
+            <p class="section-desc">버튼을 클릭하여 찬반 양측의 구체적인 입장과 근거를 확인하세요.</p>
+
+            <div class="hotspot-grid">
+                <button class="hotspot-btn" data-title="💰 예산 및 실효성 논란" data-desc="단 며칠간의 행사를 위해 대규모 예산이 투입되는 반면, 지속가능한 지역 문화발전으로 이어지지 않는다는 폐지론과, 원도심 소상공인 매출 증대효과가 확실하다는 지속론이 맞서고 있습니다." data-img="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80">
+                    💰 예산 및 실효성
+                </button>
+                <button class="hotspot-btn" data-title="🚌 교통 통제 및 주민 불편" data-desc="원도심 핵심 축인 중앙로 차단으로 인한 버스 노선 우회, 시가지 대중교통 이용객의 불편, 인근 거주민의 소음 민원이 폐지의 주요 원인으로 지목됩니다." data-img="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80">
+                    🚌 교통 통제 및 불편
+                </button>
+                <button class="hotspot-btn" data-title="🎭 축제 정체성 및 콘텐츠" data-desc="대중가수 콘서트 중심의 전형적인 행사 구성에서 벗어나, 대전만의 과학·근대문화 유산 자원을 결합한 독창적 기획으로 재편해야 한다는 개선 요구가 거셉니다." data-img="https://images.unsplash.com/photo-1469488865564-c2de10f69f96?auto=format&fit=crop&w=800&q=80">
+                    🎭 콘텐츠 및 정체성
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- 모달 창 -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <img id="modalImg" src="" alt="상세 이미지">
+            <h3 id="modalTitle"></h3>
+            <p id="modalDesc"></p>
+        </div>
+    </div>
+
+    <!-- 푸터 -->
+    <footer>
+        <p>&copy; 2026 Chungcheong Today. Interactive News Project.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
